@@ -5,8 +5,8 @@ import pathlib
 
 #CARREGA VARIAVEIS DE AMBIENTE
 
-#lib_folder = pathlib.Path(__file__).parent.resolve()
-#load_dotenv(f"{lib_folder}/_.env",override=False)
+lib_folder = pathlib.Path(__file__).parent.resolve()
+load_dotenv(f"{lib_folder}/_.env",override=False)
 load_dotenv(f".env",override=False)
 #os.environ["MODE"] = 'PRD'
 
