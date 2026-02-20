@@ -1,11 +1,11 @@
-from .loguru import *
 from .api_monitor import *
 from .task import *
 from .bot_options import *
+from .utils import *
 
 import locale
 from dateUts import now
-from bot_lib.logger import logger
+from bot_lib.config import logger
 from bot_lib.settings import botConfig
 
 

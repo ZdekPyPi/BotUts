@@ -1,21 +1,21 @@
 import sys
 import os
 from functools import wraps
-from ..logger import loguru as lgru
-from bot_lib.logger import logger
+from bot_lib.config import logger
+from bot_lib.errors import *
 from .task import Task
 import bot_lib
+from time import time
 
 BEFORE_START_EVENT = []
 AFTER_FINISH_EVENT = []
 
-class BusinessException(Exception):
-    def __init__(self,msg):
-        self.msg = msg
+task_time_start = None
+task_time_end   = None
 
-class EventException(Exception):
-    def __init__(self,msg):
-        self.msg = msg
+def elapsed_time():
+    global task_time_start,task_time_end
+    return round((time() if task_time_end is None else task_time_end) - task_time_start,2)
 
 def replace_chars(text):
     chars = ["{","}"]
@@ -47,6 +47,7 @@ def logger_start(function):
     Task.current_task_info(function.__TASKNAME__)
     @wraps(function)
     def wrapper(*args, **kwargs):
+        global task_time_start,task_time_end
         os.environ.pop("ID_PROC", None) 
         try:
             os.environ["TASKNAME"] = function.__TASKNAME__
@@ -58,30 +59,33 @@ def logger_start(function):
             #BEFORE START EVENT
             if BEFORE_START_EVENT:[fn() for fn in BEFORE_START_EVENT]
 
-            
+            #METODOS PARA CALCULO DO TEMPO DE EXECUÇÃO
+            task_time_start = time()
+
             logger_manager(function)(*args, **kwargs)
+            task_time_end= time()
             
             logger.bind_extra(None) #RESETA O BIND
 
             #AFTER FINISH EVENT
-            if AFTER_FINISH_EVENT:[fn("WARNING" if lgru.HAS_WARNING else "SUCCESS","") for fn in AFTER_FINISH_EVENT]
+            if AFTER_FINISH_EVENT:[fn("WARNING" if logger.HAS_WARNING else "SUCCESS","") for fn in AFTER_FINISH_EVENT]
 
-            fnc = logger.warning if lgru.HAS_WARNING else logger.success
+            fnc = logger.warning if logger.HAS_WARNING else logger.success
             fnc("FINISHED",func_name = function.__name__)
         except BusinessException as e: 
             if AFTER_FINISH_EVENT:[fn("BUSNSEXP",str(e)) for fn in AFTER_FINISH_EVENT]
             logger.log("BUSNSEXP", "FINISHED",func_name = function.__name__)
             pass
         #except ValueError       : logger.error("FINISHED",func_name = function.__name__)
-        except EventException  as e:                                    # QUANDO FOR UM EVENTO QUE DEU ERRO NAO PODE CHAMAR OS EVENTOS NOVAMENTE SE CAIR EM EXCEPTION
-            logger.critical("FINISHED",func_name = function.__name__)
         except Exception   as e: 
             if AFTER_FINISH_EVENT:[fn("CRITICAL",str(e)) for fn in AFTER_FINISH_EVENT]
             logger.critical("FINISHED",func_name = function.__name__)
+        except EventException  as e:                                    # QUANDO FOR UM EVENTO QUE DEU ERRO NAO PODE CHAMAR OS EVENTOS NOVAMENTE SE CAIR EM EXCEPTION
+            logger.critical("FINISHED",func_name = function.__name__)
         finally:
             bot_lib.ID_PROC  = None
-            lgru.HAS_ERROR   = None
-            lgru.HAS_WARNING = None
+            logger.HAS_ERROR   = None
+            logger.HAS_WARNING = None
             os.environ.pop("ID_PROC", None) 
             os.environ.pop("TASKNAME", None) 
 

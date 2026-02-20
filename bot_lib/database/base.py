@@ -35,6 +35,16 @@ class CustomBase:
         s.rollback()
         s.delete(self)
         s.commit()
+    
+    @classmethod
+    def update_bulk(self, filtros, **novos_valores):
+        """
+        Exemplo: Tarefa.update_bulk(Tarefa.id_tarefa == 10, {"status": "OK"})
+        """
+        query = self.query()
+        num = query.filter(filtros).update(novos_valores, synchronize_session='fetch')
+        query.session.commit()
+        return num
 
 
 # base que adciona os metodos Save, Delete

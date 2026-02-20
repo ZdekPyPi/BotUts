@@ -10,12 +10,15 @@ from .common import get_git_remote_url,get_current_git_ref
 import re
 from sys import argv
 
+
 def botlib_commands():
     print_with_color_tags(f"<black><bg_white>{'-'*50} COMMANDS </bg_white></black>")
     
     print("gitup",'\t\t','<comment>','\t','ATUALIZA O REPOSITORIO DO GIT') 
     print("upreq",'\t\t','','\t\t','ATUALIZA O REQUIREMENTS DA VENV ATUAL')
     print("setupy",'\t\t','','\t\t','CRIA A VENV, ATUALIZA O PIP, INSTALA OS REQUIREMENTS')
+    print("bottasks",'\t\t','','\t\t','LISTA TODAS AS TASKS DO ROBO')
+    print("taskloop",'\t\t','','\t\t','INICIA O LOOP DO PROCESSO')
     print("createstack",'\t\t','','\t','CRIA A STACK NO PORTAINER')
     print("redeploy",'\t\t','','\t','DA UM REDEPLOY NA STACK DO PORTAINER')
     print("runprd",'\t\t','','\t\t','RODA O ROBO EM PRODUCAO')

@@ -4,7 +4,7 @@ from bot_lib.database.base import Base
 
 class BotInfo(Base):
     __tablename__ = 'tbs_bots_info'
-    __table_args__ = {'schema': 'python'}
+    # __table_args__ = {'schema': 'python'}
 
     botid            = sa.Column(String(10))
     status           = sa.Column(String(50))

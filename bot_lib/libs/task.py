@@ -3,10 +3,9 @@ from time import sleep
 import pycron
 import os
 import bot_lib
-from bot_lib.logger import logger
+from bot_lib.config import logger
 from bot_lib.database.orm import Log,BotInfo
 from bot_lib.settings import botConfig
-
 
 class Task:
     TASKS = {}
@@ -34,7 +33,7 @@ class Task:
             Task.TASKS[task_name] = {"function_name":function.__name__,"function":function,"local":local,"cron":cron,"comment":comment}
             function.__TASKNAME__ = task_name
 
-            if bot_lib.IN_PRD and not local:
+            if botConfig.is_in_prd and not local:
                 crn = Log(level="CRON",message=cron)
                 crn.task_name = task_name
                 crn.save()

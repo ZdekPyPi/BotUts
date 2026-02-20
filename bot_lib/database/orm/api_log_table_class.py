@@ -11,7 +11,7 @@ from bot_lib.settings import botConfig
 # =========================== API MONITOR ==============================================================
 class ApiMonitor(Base):
     __tablename__ = 'api_monitor'
-    __table_args__ = {"schema": 'python'}
+    # __table_args__ = {"schema": 'python'}
 
     id_proc           = sa.Column(sa.Integer)
     datetime          = sa.Column(sa.DateTime,nullable=False)

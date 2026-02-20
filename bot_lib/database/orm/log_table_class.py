@@ -1,19 +1,20 @@
 from sqlalchemy import cast,Date,desc
 from datetime import date
-from dateUts import now
+from dateUts import now,today
 import sqlalchemy as sa
 import platform
 import psutil
 import socket
 import os
 if not "Windows" in platform.platform(): import pwd
+from sqlalchemy import func
 from bot_lib.settings import botConfig
 import bot_lib
 from bot_lib.database.base import Base
 
 class Log(Base):
     __tablename__ = 'tbs_logs'
-    __table_args__ = {"schema": 'python'}
+    # __table_args__ = {"schema": 'python'}
 
     id_proc           = sa.Column(sa.Integer)
     datetime          = sa.Column(sa.DateTime,nullable=False)
@@ -61,7 +62,8 @@ class Log(Base):
         idprc = os.getenv("ID_PROC")
 
         if not idprc:
-            lg = Log.query().filter(cast(Log.datetime,Date) == date.today(),Log.botname == botConfig.BOT_NAME).filter(Log.id_proc != None).order_by(desc(Log.id_proc)).first()
+            #lg = Log.query().filter(cast(Log.datetime,Date) == date.today(),Log.botname == botConfig.BOT_NAME).filter(Log.id_proc != None).order_by(desc(Log.id_proc)).first()
+            lg = Log.query().filter(func.date(Log.datetime) == today("sql"),Log.botname == botConfig.BOT_NAME).filter(Log.id_proc != None).order_by(desc(Log.id_proc)).first()
             if not lg or lg.id_proc is None:
                 os.environ["ID_PROC"] = "0"
             else:

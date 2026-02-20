@@ -9,7 +9,7 @@ import inspect
 import urllib3
 import os
 import time
-
+from bot_lib import botConfig
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -24,7 +24,7 @@ def default_manager(url,req,*args, **kwargs):
     line      = calframe[2][2]
     file_name = os.path.basename(path)
 
-    if bot_lib.IN_PRD:
+    if botConfig.is_in_prd:
         ApiMonitor(
                 method      = req.request.method,
                 function    = caller,
@@ -88,7 +88,7 @@ def default_manager_httplib2(method,url,data,elapsed_time_microseconds):
     line      = calframe[2][2]
     file_name = os.path.basename(path)
 
-    if bot_lib.IN_PRD:
+    if botConfig.is_in_prd:
         ApiMonitor(
                 method      = method,
                 function    = caller,

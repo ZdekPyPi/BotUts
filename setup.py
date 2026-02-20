@@ -43,14 +43,14 @@ setup(
             "clearselenoid = bot_lib.selenoid:deletar_todas"
         ],
     },
-    author='Sympla Development team',
-    description='Zdek Util libraries for Pythom coding',
+    author='Zdek Development team',
+    description='Zdek Util libraries for Python coding',
     url='https://github.com/ZdekPyPi/BotUts',
     classifiers=[
         'Programming Language :: Python :: 3',
         'Zdek Copyright'
     ],
     python_requires='>=3.10',
-    author_email='melque_ex@uahooc.om.br',
+    author_email='melque_ex@yahoo.com.br',
    license='MIT'
 )
