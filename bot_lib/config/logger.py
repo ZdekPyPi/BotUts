@@ -127,50 +127,50 @@ class configLevels:
     def bind_extra(self,extra):
         self._options = self.log.bind(extra_1=extra)._options
 
-    def success(self,message,log_level=0,**kwargs):
+    def success(self,message,log_level=0,depth = 1,**kwargs):
         level = log_level if log_level else self.n_level
         tabs = "\t" * level
-        self.log.success(f"{tabs}{message}",**kwargs)
+        self.log.opt(depth=depth).success(f"{tabs}{message}",**kwargs)
     
-    def info(self,message,log_level=0,**kwargs):
+    def info(self,message,log_level=0,depth = 1,**kwargs):
         level = log_level if log_level else self.n_level
         tabs = "\t" * level
-        self.log.info(f"{tabs}{message}",**kwargs)
+        self.log.opt(depth=depth).info(f"{tabs}{message}",**kwargs)
     
-    def warning(self,message,log_level=0,**kwargs):
+    def warning(self,message,log_level=0,depth = 1,**kwargs):
         level = log_level if log_level else self.n_level
         tabs = "\t" * level
-        self.log.warning(f"{tabs}{message}",**kwargs)
+        self.log.opt(depth=depth).warning(f"{tabs}{message}",**kwargs)
     
-    def error(self,message,log_level=0,**kwargs):
+    def error(self,message,log_level=0,depth = 1,**kwargs):
         level = log_level if log_level else self.n_level
         tabs = "\t" * level
-        self.log.error(f"{tabs}{message}",**kwargs)
+        self.log.opt(depth=depth).error(f"{tabs}{message}",**kwargs)
     
-    def critical(self,message,log_level=0,**kwargs):
+    def critical(self,message,log_level=0,depth = 1,**kwargs):
         level = log_level if log_level else self.n_level
         tabs = "\t" * level
-        self.log.critical(f"{tabs}{message}",**kwargs)
+        self.log.opt(depth=depth).critical(f"{tabs}{message}",**kwargs)
     
-    def busnsexp(self,message,log_level=0,**kwargs):
+    def busnsexp(self,message,log_level=0,depth = 1,**kwargs):
         level = log_level if log_level else self.n_level
         tabs = "\t" * level
-        self.log.log("BUSNSEXP",f"{tabs}{message}",**kwargs)
+        self.log.opt(depth=depth).log("BUSNSEXP",f"{tabs}{message}",**kwargs)
     
-    def exception(self,message,log_level=0,**kwargs):
+    def exception(self,message,log_level=0,depth = 1,**kwargs):
         level = log_level if log_level else self.n_level
         tabs = "\t" * level
-        self.log.exception(f"{tabs}{message}",**kwargs)
+        self.log.opt(depth=depth).exception(f"{tabs}{message}",**kwargs)
         
-    def inter(self,message,log_level=0,**kwargs):
+    def inter(self,message,log_level=0,depth = 1,**kwargs):
         level = log_level if log_level else self.n_level
         tabs = "\t" * level
-        self.log.log("INTER",f"{tabs}{message}",**kwargs)
+        self.log.opt(depth=depth).log("INTER",f"{tabs}{message}",**kwargs)
     
-    def job(self,message,log_level=0,**kwargs):
+    def job(self,message,log_level=0,depth = 1,**kwargs):
         level = log_level if log_level else self.n_level
         tabs = "\t" * level
-        self.log.log("JOB",f"{tabs}{message}",**kwargs)
+        self.log.opt(depth=depth).log("JOB",f"{tabs}{message}",**kwargs)
 
 
 class customLogger(configLogger,configLevels):

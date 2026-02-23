@@ -52,9 +52,9 @@ def logger_start(function):
         try:
             os.environ["TASKNAME"] = function.__TASKNAME__
             logger.bind_extra(None) #RESETA O BIND
-            logger.info(f"========== TASK({function.__TASKNAME__}) ===========")
+            logger.info(f"========== TASK({function.__TASKNAME__}) ===========",depth=3)
 
-            logger.success("START",func_name = function.__name__)
+            logger.success("START",func_name = function.__name__,depth=3)
 
             #BEFORE START EVENT
             if BEFORE_START_EVENT:[fn() for fn in BEFORE_START_EVENT]
@@ -71,17 +71,17 @@ def logger_start(function):
             if AFTER_FINISH_EVENT:[fn("WARNING" if logger.HAS_WARNING else "SUCCESS","") for fn in AFTER_FINISH_EVENT]
 
             fnc = logger.warning if logger.HAS_WARNING else logger.success
-            fnc("FINISHED",func_name = function.__name__)
+            fnc("FINISHED",func_name = function.__name__,depth=3)
         except BusinessException as e: 
             if AFTER_FINISH_EVENT:[fn("BUSNSEXP",str(e)) for fn in AFTER_FINISH_EVENT]
-            logger.log("BUSNSEXP", "FINISHED",func_name = function.__name__)
+            logger.log("BUSNSEXP", "FINISHED",func_name = function.__name__,depth=3)
             pass
         #except ValueError       : logger.error("FINISHED",func_name = function.__name__)
         except Exception   as e: 
             if AFTER_FINISH_EVENT:[fn("CRITICAL",str(e)) for fn in AFTER_FINISH_EVENT]
-            logger.critical("FINISHED",func_name = function.__name__)
+            logger.critical("FINISHED",func_name = function.__name__,depth=3)
         except EventException  as e:                                    # QUANDO FOR UM EVENTO QUE DEU ERRO NAO PODE CHAMAR OS EVENTOS NOVAMENTE SE CAIR EM EXCEPTION
-            logger.critical("FINISHED",func_name = function.__name__)
+            logger.critical("FINISHED",func_name = function.__name__,depth=3)
         finally:
             bot_lib.ID_PROC  = None
             logger.HAS_ERROR   = None

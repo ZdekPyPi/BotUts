@@ -10,7 +10,7 @@ def mark_inter(seconds:int,description:str="",commit=True):
             Log(level="INTER",message=description,extra_1=str(seconds)).save()
         else:
             TO_COMMIT.append((seconds,description))
-    logger.inter(description, extra_1=str(seconds))
+    logger.inter(description, extra_1=str(seconds),depth=2)
 
 def commit_mark_inter():
     for seconds,description in TO_COMMIT:
@@ -20,4 +20,4 @@ def commit_mark_inter():
 def mark_job(type_job:str, description:str="", qtd:int=1):
     if botConfig.is_in_prd:
         Log(level="JOB",message=description,extra_1=str(qtd)).save()
-    logger.job(f"({type_job}) - {description}", extra_1=str(qtd))
+    logger.job(f"({type_job}) - {description}", extra_1=str(qtd),depth=2)
