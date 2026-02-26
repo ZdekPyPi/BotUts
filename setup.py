@@ -55,7 +55,6 @@ setup(
     url='https://github.com/ZdekPyPi/BotUts',
     classifiers=[
         'Programming Language :: Python :: 3',
-        'Zdek Copyright'
     ],
     python_requires='>=3.10',
     author_email='melque_ex@yahoo.com.br',
