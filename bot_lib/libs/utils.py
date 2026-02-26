@@ -29,7 +29,6 @@ def retry(attempts=3, delay=2, skip_on_errors=None):
       return wrapper
    return decorator
 
-
 def timeout(segundos):
     def decorator(func):
         @functools.wraps(func)
@@ -55,3 +54,14 @@ def timeout(segundos):
             return res[0] if res else None
         return wrapper
     return decorator
+
+def singleton(cls):
+    instances = {}
+
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    
+    return get_instance
+

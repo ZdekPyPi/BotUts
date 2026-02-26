@@ -6,7 +6,7 @@ from bot_lib.errors import *
 from .task import Task
 import bot_lib
 from time import time
-
+from bot_lib.libs import mark
 BEFORE_START_EVENT = []
 AFTER_FINISH_EVENT = []
 
@@ -39,7 +39,10 @@ def after_finish_event(function): #DEPOIS DE TERMINAR
     AFTER_FINISH_EVENT.append(logger_manager(function))
     
     def wrapper(*args, **kwargs):
-        return function(*args, **kwargs)
+        try:
+            return function(*args, **kwargs)
+        except Exception as e:
+            raise EventException(str(e))
         
     return wrapper
 
@@ -48,7 +51,7 @@ def logger_start(function):
     @wraps(function)
     def wrapper(*args, **kwargs):
         global task_time_start,task_time_end
-        os.environ.pop("ID_PROC", None) 
+        os.environ.pop("ID_PROC", None)
         try:
             os.environ["TASKNAME"] = function.__TASKNAME__
             logger.bind_extra(None) #RESETA O BIND
@@ -83,29 +86,14 @@ def logger_start(function):
         except EventException  as e:                                    # QUANDO FOR UM EVENTO QUE DEU ERRO NAO PODE CHAMAR OS EVENTOS NOVAMENTE SE CAIR EM EXCEPTION
             logger.critical("FINISHED",func_name = function.__name__,depth=3)
         finally:
-            bot_lib.ID_PROC  = None
+            bot_lib.ID_PROC    = None
             logger.HAS_ERROR   = None
             logger.HAS_WARNING = None
+            mark.TO_COMMIT     = []
             os.environ.pop("ID_PROC", None) 
             os.environ.pop("TASKNAME", None) 
 
     return wrapper
-
-
-def events_logger_manager(function):
-    file_name = os.path.basename(function.__code__.co_filename)
-    params = lambda : {"line_exec":sys.exc_info()[2].tb_next.tb_lineno if sys.exc_info()[2].tb_next else None,"func_name":function.__name__,"file_name":file_name}
-
-    @wraps(function)
-    def wrapper(*args, **kwargs):
-        try:
-           return function(*args, **kwargs)
-        except Exception as e:
-            logger.critical(replace_chars(str(e)),**params(),extra_1=function.__EVENTTYPE__)
-            raise
-
-    return wrapper
-
 
 def logger_manager(function):
     file_name = os.path.basename(function.__code__.co_filename)
@@ -134,5 +122,4 @@ def logger_class():
                 setattr(cls, attr, logger_manager(getattr(cls, attr)))
         return cls
     return wraps
-
 

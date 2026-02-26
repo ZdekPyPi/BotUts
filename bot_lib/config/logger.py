@@ -4,6 +4,7 @@ import json
 import sys
 from bot_lib import botConfig
 import os
+from dateUts import now
 
 class configLogger:
     HAS_WARNING, HAS_ERROR = False,False
@@ -161,7 +162,12 @@ class configLevels:
         level = log_level if log_level else self.n_level
         tabs = "\t" * level
         self.log.opt(depth=depth).exception(f"{tabs}{message}",**kwargs)
-        
+
+    def debug(self,message,log_level=0,depth = 1,**kwargs):
+        level = log_level if log_level else self.n_level
+        tabs = "\t" * level
+        self.log.opt(depth=depth).debug(f"{tabs}{message}",**kwargs)
+            
     def inter(self,message,log_level=0,depth = 1,**kwargs):
         level = log_level if log_level else self.n_level
         tabs = "\t" * level

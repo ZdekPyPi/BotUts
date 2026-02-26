@@ -6,8 +6,6 @@ import os
 class botConfig:
     BOT_NAME    : str  = os.getenv("BOT_NAME")
     BOT_ID      : str  = os.getenv("BOT_ID")
-    VAULT_HOST  : str  = os.getenv("VAULT_HOST")
-    VAULT_TOKEN : str  = os.getenv("VAULT_TOKEN")
     MODE        : str  = os.getenv("MODE","DEV")
 
     @property

@@ -5,25 +5,52 @@ import os
 from bot_lib.common.colorama_print import print_with_color_tags
 from .portainer import *
 from bot_lib.settings import botConfig
-from bot_lib.libs import Task,show_config,show_tasks
+from bot_lib.libs import Task,show_config
 from .common import get_git_remote_url,get_current_git_ref
 import re
 from sys import argv
 
+def print_item_terminal(text,title=False,total_size=80,color="black",bg_color="white"):
+    fill_left = f" {text} ".center(total_size,'=') if title else f"{'-'*((total_size-len(text))//2)} {text}"
+    fill_left = fill_left.ljust(total_size,'=') if title else fill_left.ljust(60,' ')
+    print_with_color_tags(f"<{color}><bg_{bg_color}>{fill_left}</bg_{bg_color}></{color}>")
+
 
 def botlib_commands():
-    print_with_color_tags(f"<black><bg_white>{'-'*50} COMMANDS </bg_white></black>")
-    
+    print_item_terminal("COMMANDS",title=True)
+
+    print_item_terminal("UTILS",color="black",bg_color="cyan")
     print("gitup",'\t\t','<comment>','\t','ATUALIZA O REPOSITORIO DO GIT') 
     print("upreq",'\t\t','','\t\t','ATUALIZA O REQUIREMENTS DA VENV ATUAL')
     print("setupy",'\t\t','','\t\t','CRIA A VENV, ATUALIZA O PIP, INSTALA OS REQUIREMENTS')
-    print("bottasks",'\t\t','','\t\t','LISTA TODAS AS TASKS DO ROBO')
-    print("taskloop",'\t\t','','\t\t','INICIA O LOOP DO PROCESSO')
-    print("createstack",'\t\t','','\t','CRIA A STACK NO PORTAINER')
-    print("redeploy",'\t\t','','\t','DA UM REDEPLOY NA STACK DO PORTAINER')
-    print("runprd",'\t\t','','\t\t','RODA O ROBO EM PRODUCAO')
-    print("runprdstream",'\t','<task>','\t','RODA O ROBO EM PRODUCAO E MOSTRA OS LOGS EM TEMPO REAL')
-    pass
+    
+    print_item_terminal("BOT UTILS",color="black",bg_color="cyan")
+    print("bot-tasks",'\t\t','','\t','LISTA TODAS AS TASKS DO ROBO')
+    print("bot-run",'\t','<task>','\t','RODA UMA TASK (CASO NAO INFORMADA RODA A PRIMEIRA ENCONTRADA)')
+    print("bot-run-all",'\t\t','','\t','RODA TODAS AS TASKS INDEPENDENTE DO CRON')
+    print("bot-loop",'\t\t','','\t','INICIA O LOOP DO PROCESSO')
+
+
+    print_item_terminal("PORTAINER",color="black",bg_color="cyan")
+    print("bot-stack",'\t\t','','\t','CRIA A STACK NO PORTAINER')
+    print("bot-deploy",'\t\t','','\t','DA UM REDEPLOY NA STACK DO PORTAINER')
+    print("bot-run-prd",'\t\t','','\t','RODA O ROBO EM PRODUCAO')
+    print("bot-stream",'\t','<task>','\t','RODA O ROBO EM PRODUCAO E MOSTRA OS LOGS EM TEMPO REAL')
+
+    print()
+    print_item_terminal("ENVARS",title=True,color="black",bg_color="white")
+    print_item_terminal("REQUIRED",color="black",bg_color="cyan")
+    print("BOT_NAME",'\t','<BOT_NAME>','\t','')
+    print("BOT_ID",'\t\t','<BOT_ID>','\t','')
+    print("MODE",'\t\t','<DEV|PRD>','\t','')
+    print_item_terminal("PORTAINER",color="black",bg_color="cyan")
+    print("PORTAINER_HOST",'\t\t','','\t','<http://localhost:9000>')
+    print("PORTAINER_USER",'\t\t','','\t','<USERNAME>')
+    print("PORTAINER_PASSWORD",'\t','','\t','<PASSWORD>')
+    print_item_terminal("OTHERS",color="black",bg_color="cyan")
+    print("MOON_HOST",'\t\t','','\t','<http://localhost:444/wd/hub>')
+    print("MSI_HOST",'\t\t','','\t','<http://localhost:5000>')
+    print("MSI_TOKEN",'\t\t','','\t','<TOKEN>')
 
 def existe_venv():
     for d in os.listdir():
@@ -169,7 +196,7 @@ def bot_tasks():
     sys.path.append(str(Path(os.getcwd())))
     sys.path.append(str(Path(os.getcwd()).joinpath("app")))
     import app.__main__ #CARREGA AS TASKS
-    show_tasks()
+    Task.show_tasks()
 
 
 def task_loop():
@@ -178,3 +205,22 @@ def task_loop():
     import app.__main__ #CARREGA AS TASKS
     show_config()
     Task.loop()
+
+def run_task():
+    sys.path.append(str(Path(os.getcwd())))
+    sys.path.append(str(Path(os.getcwd()).joinpath("app")))
+    import app.__main__ #CARREGA AS TASKS
+    task_name = argv[1] if len(argv) >1 else ""
+    if not task_name:
+        tasks = Task.TASKS
+        if not tasks.keys():
+            return print_with_color_tags(f"<bg_red> NENHUMA TASK ENCONTRADA </bg_red>")
+        task_name  = tasks.keys()[0]
+        
+    Task.run_task(task_name)
+
+def run_all_tasks():
+    sys.path.append(str(Path(os.getcwd())))
+    sys.path.append(str(Path(os.getcwd()).joinpath("app")))
+    import app.__main__ #CARREGA AS TASKS
+    Task.run_all_tasks()

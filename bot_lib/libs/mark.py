@@ -15,6 +15,7 @@ def mark_inter(seconds:int,description:str="",commit=True):
 def commit_mark_inter():
     for seconds,description in TO_COMMIT:
         Log(level="INTER",message=description,extra_1=str(seconds)).save()
+    logger.info(f"Commitando {len(TO_COMMIT)} marcações de INTER",depth=2)
     TO_COMMIT.clear()
 
 def mark_job(type_job:str, description:str="", qtd:int=1):
