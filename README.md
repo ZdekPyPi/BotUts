@@ -130,7 +130,7 @@ def main():
 - para executar uma task especifica `bot-run minha-task`
 - para executar as tasks em loop `bot-loop`
 
-![Exemplo de log organizado](https://github.com/ZdekPyPi/BotUts/tree/main/git_images/uso_task.png)
+![Exemplo de log organizado](https://raw.githubusercontent.com/ZdekPyPi/BotUts/main/git_images/uso_task.png)
 
 ---
 
@@ -182,7 +182,7 @@ class Rpa:
 Rpa().start()
 
 ```
-![Exemplo](https://github.com/ZdekPyPi/BotUts/tree/main/git_images/logger_class.png)
+![Exemplo](https://raw.githubusercontent.com/ZdekPyPi/BotUts/main/git_images/logger_class.png)
 
 #### Marcação (marks)
 Permite registrar eventos, interações e jobs para rastreamento e auditoria.
@@ -207,7 +207,7 @@ mark_inter(10,"Relatorio 2 OK",commit=False)
 commit_mark_inter()
 
 ```
-![Exemplo](https://github.com/ZdekPyPi/BotUts/tree/main/git_images/marks.png)
+![Exemplo](https://raw.githubusercontent.com/ZdekPyPi/BotUts/main/git_images/marks.png)
 
 ### Observações
 - Consulte o código dos módulos para detalhes avançados.
