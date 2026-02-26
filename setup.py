@@ -8,7 +8,7 @@ githubhost = 'github.com' if not GIT_TOKEN else f"{GIT_TOKEN}@github.com"
 
 
 setup(
-    name='bot_lib',
+    name='botUts',
     version='1.0.0',
     packages=find_packages(),
     install_requires=[
