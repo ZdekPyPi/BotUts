@@ -26,6 +26,8 @@ Você pode definir as variáveis de ambiente manualmente ou criar um arquivo `.e
 BOT_NAME           = MeuBot
 BOT_ID             = 123
 MODE               = DEV   #DEFAULT DEV (`DEV` ou `PRD`)
+LOG_DB             = Y     #DEFAULT N (Y|N)
+DATABASE_URL       =       #SQLACHEMY URL DB sqlite:/// OR SIMILAR
 ```
 O arquivo `.env` será carregado automaticamente
 
@@ -100,6 +102,7 @@ from bot_lib import botConfig
 print(botConfig.BOT_NAME)
 print(botConfig.BOT_ID)
 print(botConfig.MODE)
+print(botConfig.LOG_DB)  #HABILITA OU NAO OS LOGS BANCO DE DADOS EM PRODUCAO
 print(botConfig.is_in_prd)
 
 ```

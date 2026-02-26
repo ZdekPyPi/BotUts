@@ -72,7 +72,7 @@ class configLogger:
 
     @staticmethod
     def handler_db(data):
-        if not botConfig.is_in_prd:
+        if not botConfig.is_in_prd or not botConfig.LOG_DB:
             return
         data2 = json.loads(data)["record"]
         extra = data2["extra"]

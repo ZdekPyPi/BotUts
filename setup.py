@@ -9,7 +9,7 @@ githubhost = 'github.com' if not GIT_TOKEN else f"{GIT_TOKEN}@github.com"
 
 setup(
     name='botUts',
-    version='1.0.1',
+    version='1.0.2',
     packages=find_packages(),
     long_description=open('README.md',encoding='utf-8').read(),
     long_description_content_type='text/markdown',
@@ -35,6 +35,7 @@ setup(
             "gitup          = bot_lib.cli:gitup",
             "upreq          = bot_lib.cli:upreq",  # OK
             "setupy         = bot_lib.cli:setupy",  # OK
+            "bot-first-setup= bot_lib.cli:bot_first_setup",  # OK
             # PORTAINER
             "bot-deploy      = bot_lib.cli:pull_redeploy",  # OK
             "bot-stack       = bot_lib.cli:create_stack",  # OK

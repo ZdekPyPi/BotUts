@@ -7,9 +7,10 @@ load_dotenv(f".env", override=True)
 
 
 class botConfig:
-    BOT_NAME: str = os.getenv("BOT_NAME")
-    BOT_ID: str = os.getenv("BOT_ID")
-    MODE: str = os.getenv("MODE", "DEV")
+    BOT_NAME: str  = os.getenv("BOT_NAME")
+    BOT_ID  : str  = os.getenv("BOT_ID")
+    MODE    : str  = os.getenv("MODE", "DEV")
+    LOG_DB  : bool = os.getenv("LOG_DB", "N").upper() == "Y"
 
     @property
     def is_in_prd(self):
