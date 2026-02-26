@@ -3,6 +3,7 @@ from colorama import init, Fore, Back
 # Inicializa o colorama para garantir que funciona no Windows
 init(autoreset=True)
 
+
 def parse_color_tag(tag):
     """
     Converte as tags de cor em códigos do colorama.
@@ -49,22 +50,18 @@ def print_with_color_tags(text):
     left_tags = []  # Lista para armazenar as tags aplicadas
     formatted_text = ""  # Texto formatado para exibição
 
-
-
-
-
     i = 0  # Índice para percorrer o texto
-    
+
     while i < len(text):
         if text[i] == "<":  # Encontrar o início da tag
             start_tag = i + 1
             end_tag = text.find(">", start_tag)
             if end_tag == -1:
                 break  # Caso a tag esteja mal formada, sai do loop
-                
+
             # Pega a tag da cor
             tag = text[start_tag:end_tag]
-            
+
             # Verifica se a tag contém o comando de fechamento
             if tag.startswith("/"):
                 if left_tags:
@@ -88,10 +85,12 @@ def print_with_color_tags(text):
 
 # Exemplo de uso
 if __name__ == "__main__":
-    print_with_color_tags("<green><bg_red>Texto com fundo vermelho</bg_red> texto sem background")
-    print_with_color_tags("<blue><bg_yellow>Texto azul com fundo amarelo</bg_yellow></blue>")
-    print_with_color_tags("<red>Texto vermelho <bg_green>com fundo verde</bg_green> e mais texto vermelho</red>")
-
+    print_with_color_tags(
+        "<green><bg_red>Texto com fundo vermelho</bg_red> texto sem background")
+    print_with_color_tags(
+        "<blue><bg_yellow>Texto azul com fundo amarelo</bg_yellow></blue>")
+    print_with_color_tags(
+        "<red>Texto vermelho <bg_green>com fundo verde</bg_green> e mais texto vermelho</red>")
 
 
 # # Exemplo de uso

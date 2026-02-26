@@ -1,5 +1,6 @@
 import subprocess
 
+
 def get_git_remote_url():
     try:
         result = subprocess.run(
@@ -11,6 +12,7 @@ def get_git_remote_url():
         return result.stdout.strip()
     except subprocess.CalledProcessError:
         return None
+
 
 def get_current_git_ref():
     try:

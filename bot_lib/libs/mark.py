@@ -4,21 +4,24 @@ from bot_lib import logger
 
 TO_COMMIT = []
 
-def mark_inter(seconds:int,description:str="",commit=True):
+
+def mark_inter(seconds: int, description: str = "", commit=True):
     if botConfig.is_in_prd:
         if commit:
-            Log(level="INTER",message=description,extra_1=str(seconds)).save()
+            Log(level="INTER", message=description, extra_1=str(seconds)).save()
         else:
-            TO_COMMIT.append((seconds,description))
-    logger.inter(description, extra_1=str(seconds),depth=2)
+            TO_COMMIT.append((seconds, description))
+    logger.inter(description, extra_1=str(seconds), depth=2)
+
 
 def commit_mark_inter():
-    for seconds,description in TO_COMMIT:
-        Log(level="INTER",message=description,extra_1=str(seconds)).save()
-    logger.info(f"Commitando {len(TO_COMMIT)} marcações de INTER",depth=2)
+    for seconds, description in TO_COMMIT:
+        Log(level="INTER", message=description, extra_1=str(seconds)).save()
+    logger.info(f"Commitando {len(TO_COMMIT)} marcações de INTER", depth=2)
     TO_COMMIT.clear()
 
-def mark_job(type_job:str, description:str="", qtd:int=1):
+
+def mark_job(type_job: str, description: str = "", qtd: int = 1):
     if botConfig.is_in_prd:
-        Log(level="JOB",message=description,extra_1=str(qtd)).save()
-    logger.job(f"({type_job}) - {description}", extra_1=str(qtd),depth=2)
+        Log(level="JOB", message=description, extra_1=str(qtd)).save()
+    logger.job(f"({type_job}) - {description}", extra_1=str(qtd), depth=2)

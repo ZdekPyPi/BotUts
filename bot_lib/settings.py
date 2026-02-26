@@ -1,12 +1,15 @@
+from dotenv import load_dotenv
 import json
 import os
-# PEGANDO CONFIGURACOES DO BOT ATUAL
+
+# VARIAVEIS DE AMBIENTE DO PROJETO
+load_dotenv(f".env", override=True)
 
 
 class botConfig:
-    BOT_NAME    : str  = os.getenv("BOT_NAME")
-    BOT_ID      : str  = os.getenv("BOT_ID")
-    MODE        : str  = os.getenv("MODE","DEV")
+    BOT_NAME: str = os.getenv("BOT_NAME")
+    BOT_ID: str = os.getenv("BOT_ID")
+    MODE: str = os.getenv("MODE", "DEV")
 
     @property
     def is_in_prd(self):
@@ -14,5 +17,6 @@ class botConfig:
 
     def __repr__(self):
         return f"<botConfig {self.BOT_NAME}>"
+
 
 botConfig = botConfig()
