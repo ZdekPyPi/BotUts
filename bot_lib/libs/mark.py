@@ -21,4 +21,4 @@ def commit_mark_inter():
 
 def mark_job(type_job: str, description: str = "", qtd: int = 1):
     if botConfig.is_in_prd and botConfig.LOG_DB:
-        logger.job(f"{type_job}*-*{description}", extra_1=str(qtd), depth=2)
+        logger.job(f"{type_job} | {description}", extra_1=str(qtd), depth=2)

@@ -16,6 +16,7 @@ __all__ = [
     "logger",
     "mark_inter",
     "mark_job",
+    "commit_mark_inter",
     "before_start_event",
     "after_finish_event",
     "logger_class",

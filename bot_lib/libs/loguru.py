@@ -62,10 +62,7 @@ def logger_start(function):
         try:
             os.environ["TASKNAME"] = function.__TASKNAME__
             logger.bind_extra(None)  # RESETA O BIND
-            logger.info(
-                f"========== TASK({
-                    function.__TASKNAME__}) ===========",
-                depth=3)
+            logger.info(f"========== TASK({function.__TASKNAME__}) ===========",depth=3)
 
             logger.success("START", func_name=function.__name__, depth=3)
 
