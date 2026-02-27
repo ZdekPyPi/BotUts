@@ -9,7 +9,7 @@ githubhost = 'github.com' if not GIT_TOKEN else f"{GIT_TOKEN}@github.com"
 
 setup(
     name='botUts',
-    version='1.0.2',
+    version='1.0.3',
     packages=find_packages(),
     long_description=open('README.md',encoding='utf-8').read(),
     long_description_content_type='text/markdown',

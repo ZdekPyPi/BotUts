@@ -10,4 +10,5 @@ def main():
 
 
 if __name__ == "__main__":
-    Task.run_task("minha_task")
+    Task.run_task("test")
+ 
