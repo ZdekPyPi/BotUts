@@ -47,8 +47,12 @@ class Task:
 
             @wraps(function)
             def wrapper(*args, **kwargs):
-                logger.info(f"========== TASK({task_name}) ===========")
-                function(*args, **kwargs)
+                try:
+                    logger.log._options = logger.log.bind(task_name=task_name)._options
+                    logger.info(f"========== TASK({task_name}) ===========")
+                    function(*args, **kwargs)
+                finally:
+                    logger.log._options = logger.log.bind(task_name=None)._options
             return wrapper
         return decorator
 

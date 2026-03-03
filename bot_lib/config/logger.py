@@ -53,7 +53,7 @@ class configLogger:
         task = os.getenv("TASKNAME", '')
         fmt = [
             "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: ^8}</level>",
-            f"{task: ^15}",
+            extraOpt("task_name",15),
             extraReplace("file_name", "file", 15),
             extraReplace("func_name", "function", 15),
             extraReplace("line_exec", "line", 4),
