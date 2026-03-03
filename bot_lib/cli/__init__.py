@@ -30,36 +30,19 @@ def botlib_commands():
     print_item_terminal("UTILS", color="black", bg_color="cyan")
     print("gitup", '\t\t', '<comment>', '\t', 'ATUALIZA O REPOSITORIO DO GIT')
     print("upreq", '\t\t', '', '\t\t', 'ATUALIZA O REQUIREMENTS DA VENV ATUAL')
-    print(
-        "setupy",
-        '\t\t',
-        '',
-        '\t\t',
-        'CRIA A VENV, ATUALIZA O PIP, INSTALA OS REQUIREMENTS')
+    print( "setupy", '\t\t', '', '\t\t', 'CRIA A VENV, ATUALIZA O PIP, INSTALA OS REQUIREMENTS')
 
     print_item_terminal("BOT UTILS", color="black", bg_color="cyan")
     print("bot-tasks", '\t\t', '', '\t', 'LISTA TODAS AS TASKS DO ROBO')
-    print(
-        "bot-run",
-        '\t',
-        '<task>',
-        '\t',
-        'RODA UMA TASK (CASO NAO INFORMADA RODA A PRIMEIRA ENCONTRADA)')
-    print("bot-run-all", '\t\t', '', '\t',
-          'RODA TODAS AS TASKS INDEPENDENTE DO CRON')
+    print( "bot-run", '\t', '<task>', '\t', 'RODA UMA TASK (CASO NAO INFORMADA RODA A PRIMEIRA ENCONTRADA)')
+    print("bot-run-all", '\t\t', '', '\t', 'RODA TODAS AS TASKS INDEPENDENTE DO CRON')
     print("bot-loop", '\t\t', '', '\t', 'INICIA O LOOP DO PROCESSO')
 
     print_item_terminal("PORTAINER", color="black", bg_color="cyan")
     print("bot-stack", '\t\t', '', '\t', 'CRIA A STACK NO PORTAINER')
-    print("bot-deploy", '\t\t', '', '\t',
-          'DA UM REDEPLOY NA STACK DO PORTAINER')
+    print("bot-deploy", '\t\t', '', '\t', 'DA UM REDEPLOY NA STACK DO PORTAINER')
     print("bot-run-prd", '\t\t', '', '\t', 'RODA O ROBO EM PRODUCAO')
-    print(
-        "bot-stream",
-        '\t',
-        '<task>',
-        '\t',
-        'RODA O ROBO EM PRODUCAO E MOSTRA OS LOGS EM TEMPO REAL')
+    print( "bot-stream", '\t', '<task>', '\t', 'RODA O ROBO EM PRODUCAO E MOSTRA OS LOGS EM TEMPO REAL')
 
     print()
     print_item_terminal("ENVARS", title=True, color="black", bg_color="white")
@@ -72,6 +55,7 @@ def botlib_commands():
     print("PORTAINER_USER", '\t\t', '', '\t', '<USERNAME>')
     print("PORTAINER_PASSWORD", '\t', '', '\t', '<PASSWORD>')
     print_item_terminal("OTHERS", color="black", bg_color="cyan")
+    print("DATABASE_URL", '\t\t', '', '\t', '<sqlite:///path_to.db> or <postgresql://user:password@host/db>')
     print("MOON_HOST", '\t\t', '', '\t', '<http://localhost:444/wd/hub>')
     print("MSI_HOST", '\t\t', '', '\t', '<http://localhost:5000>')
     print("MSI_TOKEN", '\t\t', '', '\t', '<TOKEN>')
