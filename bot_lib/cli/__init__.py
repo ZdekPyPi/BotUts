@@ -110,46 +110,29 @@ def venv_ativa():
 
 def setupy():
     if venv_ativa():
-        return print_with_color_tags(
-            f"<bg_red>{'*' * 20} SAIA DA VENV ATUAL PARA CRIAR UMA NOVA {'*' * 20}</bg_red>")
+        return print_with_color_tags( f"<bg_red>{'*' * 20} SAIA DA VENV ATUAL PARA CRIAR UMA NOVA {'*' * 20}</bg_red>")
     if existe_venv() and 0:
-        print_with_color_tags(
-            f"<bg_red>{
-                '*' *
-                50} VENV JA EXISTE {
-                '*' *
-                50}</bg_red>")
+        print_with_color_tags( f"<bg_red>{ '*' * 50} VENV JA EXISTE { '*' * 50}</bg_red>")
     else:
         print_with_color_tags(f"<bg_green>{'-' * 50} CRIANDO VENV </bg_green>")
         os.system(r"python -m venv venv")
         print()
-        print_with_color_tags(
-            f"<bg_blue>{
-                '-' *
-                50} ATUALIZANDO PIP </bg_blue>")
+        print_with_color_tags( f"<bg_blue>{ '-' * 50} ATUALIZANDO PIP </bg_blue>")
         upgrade_pip()
-        print_with_color_tags(
-            f"<bg_cyan>{
-                '-' *
-                50} INSTALANDO REQUIREMENTS </bg_cyan>")
+        print_with_color_tags( f"<bg_cyan>{ '-' * 50} INSTALANDO REQUIREMENTS </bg_cyan>")
         upreq()
 
 
 def gitup():
-    print_with_color_tags(
-        f"<black><bg_white>{
-            '-' *
-            50} ATUALIZANDO GIT </bg_white></black>")
+    print_with_color_tags( f"<black><bg_white>{ '-' * 50} ATUALIZANDO GIT </bg_white></black>")
     comment = sys.argv[1] if len(sys.argv) > 1 else 'Update'
     subprocess.run(['git', 'add', '.'], cwd=os.getcwd(), check=True)
     # Verifica se há algo para commitar
     result = subprocess.run(
         ['git', 'diff', '--cached', '--quiet'], cwd=os.getcwd())
     if result.returncode == 0:
-        return print_with_color_tags(
-            f"<black><bg_green>NENHUMA MUDANCA PARA COMITAR</bg_green></black>")
-    subprocess.run(['git', 'commit', '-m', comment],
-                   cwd=os.getcwd(), check=True)
+        return print_with_color_tags(f"<black><bg_green>NENHUMA MUDANCA PARA COMITAR</bg_green></black>")
+    subprocess.run(['git', 'commit', '-m', comment], cwd=os.getcwd(), check=True)
     subprocess.run(['git', 'push'], cwd=os.getcwd(), check=True)
 
 
@@ -173,9 +156,7 @@ def upgrade_pip():
 
 
 def pull_redeploy():
-    print_with_color_tags(
-        f"<black><bg_cyan>{
-            '-' * 50} REDEPLOY </bg_cyan></black>")
+    print_with_color_tags( f"<black><bg_cyan>{ '-' * 50} REDEPLOY </bg_cyan></black>")
     status, token = validade_portainer_credentials()
     if not status:
         return
@@ -187,15 +168,11 @@ def pull_redeploy():
             f"<bg_red> STACK '{botConfig.BOT_NAME}' NAO ENCONTRADA </bg_red>")
 
     redeploy_stack(stack, token)
-    print_with_color_tags(
-        f"<bg_green> RE-DEPLOY FEITO COM SUCESSO </bg_green>")
+    print_with_color_tags( f"<bg_green> RE-DEPLOY FEITO COM SUCESSO </bg_green>")
 
 
 def create_stack():
-    print_with_color_tags(
-        f"<black><bg_cyan>{
-            '-' *
-            50} CREATE BOT STACK </bg_cyan></black>")
+    print_with_color_tags( f"<black><bg_cyan>{ '-' * 50} CREATE BOT STACK </bg_cyan></black>")
 
     status, token = validade_portainer_credentials()
     if not status:
@@ -220,10 +197,7 @@ def create_stack():
 
 
 def run_prd():
-    print_with_color_tags(
-        f"<black><bg_cyan>{
-            '-' *
-            50} START PRD BOT </bg_cyan></black>")
+    print_with_color_tags( f"<black><bg_cyan>{ '-' * 50} START PRD BOT </bg_cyan></black>")
     host = os.getenv("MSI_HOST")
     token = os.getenv("MSI_TOKEN")
     if not token or not host:
@@ -244,15 +218,11 @@ def run_prd():
 
 
 def run_prd_stream():
-    print_with_color_tags(
-        f"<black><bg_cyan>{
-            '-' *
-            50} START PRD BOT STREAM </bg_cyan></black>")
+    print_with_color_tags( f"<black><bg_cyan>{ '-' * 50} START PRD BOT STREAM </bg_cyan></black>")
     host = os.getenv("MSI_HOST")
     token = os.getenv("MSI_TOKEN")
     if not token or not host:
-        return print_with_color_tags(
-            f"<bg_red> PARA USAR O MSI CONFIGURE AS VARIAVEIS DE AMBIENTE CORRETAMENTE </bg_red>")
+        return print_with_color_tags( f"<bg_red> PARA USAR O MSI CONFIGURE AS VARIAVEIS DE AMBIENTE CORRETAMENTE </bg_red>")
 
     task = argv[1] if len(argv) > 1 else ""
     url = host + "/rpa/stream"
@@ -260,8 +230,7 @@ def run_prd_stream():
 
     try:
         with requests.get(url, stream=True, params=params) as response:
-            clear_cmd_pattern = re.compile(
-                r'(\x1bc|\x1b\[2J|\x1b\[H|\x1b\[2J\x1b\[H|\x1b\[3J|\x1b\[H\x1b\[J)')
+            clear_cmd_pattern = re.compile( r'(\x1bc|\x1b\[2J|\x1b\[H|\x1b\[2J\x1b\[H|\x1b\[3J|\x1b\[H\x1b\[J)')
 
             for line in response.iter_lines(decode_unicode=True):
                 if line:
