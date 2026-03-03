@@ -1,6 +1,6 @@
 from bot_lib import *
 
-@Task.new(task_name="test", local=True)
+@Task.new(name="test", local=True)
 def main():
     logger.info("Etapa 1")
     #DO SOMETHING
