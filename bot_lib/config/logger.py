@@ -141,7 +141,7 @@ class configLevels:
         self.n_level = 0
 
     def bind_extra(self, extra):
-        self._options = self.log.bind(extra_1=extra)._options
+        self.log._options = self.log.bind(extra_1=extra)._options
 
     def success(self, message, log_level=0, depth=1, **kwargs):
         level = log_level if log_level else self.n_level
