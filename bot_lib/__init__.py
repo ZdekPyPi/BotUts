@@ -4,7 +4,6 @@ from bot_lib.libs.mark import mark_inter, mark_job, commit_mark_inter
 from bot_lib.libs.loguru import before_start_event, after_finish_event, logger_class, elapsed_time
 from bot_lib.libs.utils import retry, timeout, singleton
 from bot_lib.libs import show_config
-from bot_lib.libs.bot_options import terminal_opt
 from bot_lib.libs.task import Task
 from bot_lib.database.base import Base
 from bot_lib.database.db import DbBot, GetDbBot, create_all
@@ -25,7 +24,6 @@ __all__ = [
     "timeout",
     "show_config",
     "singleton",
-    "terminal_opt",
     "Task",
     "Base",
     "DbBot",

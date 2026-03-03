@@ -61,6 +61,7 @@ def logger_start(function):
         os.environ.pop("ID_PROC", None)
         try:
             os.environ["TASKNAME"] = function.__TASKNAME__
+            logger.log._options = logger.log.bind(task_name=function.__TASKNAME__)._options
             logger.bind_extra(None)  # RESETA O BIND
             logger.info(f"========== TASK({function.__TASKNAME__}) ===========",depth=3)
 
@@ -117,27 +118,21 @@ def logger_start(function):
 
 def logger_manager(function):
     file_name = os.path.basename(function.__code__.co_filename)
-
-    def params(): return {"line_exec": sys.exc_info()[2].tb_next.tb_lineno if sys.exc_info()[
-        2].tb_next else None, "func_name": function.__name__, "file_name": file_name}
+    params = lambda : {"line_exec":sys.exc_info()[2].tb_next.tb_lineno if sys.exc_info()[2].tb_next else None,"func_name":function.__name__,"file_name":file_name}
 
     @wraps(function)
     def wrapper(*args, **kwargs):
         try:
-            return function(*args, **kwargs)
+           return function(*args, **kwargs)
         except BusinessException as e:
             logger.log("BUSNSEXP", str(e))
             raise
         except Exception as e:
-            if "__EVENTTYPE__" in function.__dict__:  # SE A FUNCAO FOR DO TIPO EVENTO
-                logger.critical(
-                    replace_chars(
-                        str(e)),
-                    **params(),
-                    extra_1=function.__EVENTTYPE__)
+            if "__EVENTTYPE__" in function.__dict__: # SE A FUNCAO FOR DO TIPO EVENTO
+                logger.critical(replace_chars(str(e)),**params(),extra_1=function.__EVENTTYPE__)
                 raise EventException(str(e))
-            else:
-                logger.critical(replace_chars(str(e)), **params())
+            else:    
+                logger.critical(replace_chars(str(e)),**params())
                 raise
     return wrapper
 

@@ -15,58 +15,51 @@ class Task:
     def schedulled_tasks():
         return {k: v for k, v in Task.TASKS.items() if not v["local"]}
 
-    def config(task_name, cron=None, local=False, comment=None):
+    def config(task_name, cron=None,local=False,comment=None):
+        from .loguru import logger_start
         def decorator(function):
 
-            if len(task_name) > 15:
-                raise Exception(
-                    f"Nome da task deve ter no maximo 15 caracteres!")
-
+            if len(task_name) >15:
+                raise Exception(f"Nome da task deve ter no maximo 15 caracteres!")
+            
             if task_name in Task.TASKS:
                 raise Exception(f"Task ({task_name}) já utilizada!")
-
-            # VALDADE CRON QUERIES
+            
+            #VALDADE CRON QUERIES
             if not local:
                 if not cron:
                     raise Exception("Please inform a CRON query!")
                 if len(cron.split(" ")) != 5:
                     raise Exception(f"Invalid CRON! ({cron})")
-
-            Task.TASKS[task_name] = {
-                "function_name": function.__name__,
-                "function": function,
-                "local": local,
-                "cron": cron,
-                "comment": comment}
+            
             function.__TASKNAME__ = task_name
-
-            if botConfig.is_in_prd and not local:
-                crn = Log(level="CRON", message=cron)
-                crn.task_name = task_name
-                crn.save()
+        
 
             @wraps(function)
             def wrapper(*args, **kwargs):
                 try:
-                    logger.log._options = logger.log.bind(task_name=task_name)._options
-                    logger.info(f"========== TASK({task_name}) ===========")
-                    function(*args, **kwargs)
+                    logger_start(function)(*args, **kwargs)
                 finally:
                     logger.log._options = logger.log.bind(task_name=None)._options
+            
+            Task.TASKS[task_name] = {"function_name":function.__name__,"function":wrapper,"local":local,"cron":cron,"comment":comment}
+
+            if botConfig.is_in_prd and not local:
+                crn = Log(level="CRON",message=cron)
+                crn.task_name = task_name
+                crn.save()
+
             return wrapper
         return decorator
-
+  
     def loop():
         from .loguru import logger_start
         schedulled_tasks = Task.schedulled_tasks()
-        while (1):
-            for name, TaskO in schedulled_tasks.items():
-                if pycron.is_now(TaskO["cron"]):
-                    os.environ["TASKNAME"] = name
-                    logger_start(TaskO["function"])()
-                    while pycron.is_now(TaskO["cron"]):
-                        pass
-
+        while(1):
+            for name,TaskO in schedulled_tasks.items():
+                if pycron.is_now(TaskO["cron"]) or True:
+                    TaskO["function"]()
+                    while pycron.is_now(TaskO["cron"]):pass
             sleep(1)
         pass
 
@@ -126,17 +119,15 @@ class Task:
         from bot_lib.libs.loguru import logger_start
 
         if task_name not in Task.TASKS:
-            return print_with_color_tags(
-                f"<bg_red> TASK '{task_name}' INVALIDA </bg_red>")
-        logger_start(Task.TASKS[task_name]["function"])()
-
+            return print_with_color_tags(f"<bg_red> TASK '{task_name}' INVALIDA </bg_red>")
+        Task.TASKS[task_name]["function"]()
+    
     def run_all_tasks():
         from bot_lib.libs.loguru import logger_start
 
         tasks = Task.TASKS
         if not tasks:
-            return print_with_color_tags(
-                f"<bg_red> SEM TASKS CONFIGURADAS </bg_red>")
-
+            return print_with_color_tags(f"<bg_red> SEM TASKS CONFIGURADAS </bg_red>")
+        
         for task in tasks:
-            logger_start(tasks[task]["function"])()
+            tasks[task]["function"]()

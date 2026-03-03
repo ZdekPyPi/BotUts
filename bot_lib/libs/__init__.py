@@ -1,6 +1,5 @@
 from .api_monitor import *
 from .task import *
-from .bot_options import *
 from .utils import *
 
 import locale
