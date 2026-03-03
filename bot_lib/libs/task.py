@@ -15,15 +15,15 @@ class Task:
     def schedulled_tasks():
         return {k: v for k, v in Task.TASKS.items() if not v["local"]}
 
-    def config(task_name, cron=None,local=False,comment=None):
+    def new(name, cron=None,local=False,comment=None):
         from .loguru import logger_start
         def decorator(function):
 
-            if len(task_name) >15:
+            if len(name) >15:
                 raise Exception(f"Nome da task deve ter no maximo 15 caracteres!")
             
-            if task_name in Task.TASKS:
-                raise Exception(f"Task ({task_name}) já utilizada!")
+            if name in Task.TASKS:
+                raise Exception(f"Task ({name}) já utilizada!")
             
             #VALDADE CRON QUERIES
             if not local:
@@ -32,7 +32,7 @@ class Task:
                 if len(cron.split(" ")) != 5:
                     raise Exception(f"Invalid CRON! ({cron})")
             
-            function.__TASKNAME__ = task_name
+            function.__TASKNAME__ = name
         
 
             @wraps(function)
@@ -42,11 +42,11 @@ class Task:
                 finally:
                     logger.log._options = logger.log.bind(task_name=None)._options
             
-            Task.TASKS[task_name] = {"function_name":function.__name__,"function":wrapper,"local":local,"cron":cron,"comment":comment}
+            Task.TASKS[name] = {"function_name":function.__name__,"function":wrapper,"local":local,"cron":cron,"comment":comment}
 
             if botConfig.is_in_prd and not local:
                 crn = Log(level="CRON",message=cron)
-                crn.task_name = task_name
+                crn.task_name = name
                 crn.save()
 
             return wrapper

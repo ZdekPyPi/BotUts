@@ -119,11 +119,11 @@ False
 ```python
 from bot_lib import Task,logger
 
-@Task.config(task_name="minha_task", local=True,comment="task de teste")  #local=True sao tasks que nao sao schedulladas e sao executadas sobre demanda
+@Task.new(name="minha_task", local=True,comment="task de teste")  #local=True sao tasks que nao sao schedulladas e sao executadas sobre demanda
 def main():
 	logger.info("Executando task personalizada!")
 
-@Task.config(task_name="minha_cron_task", cron="0 14 * * *")  #essa task ira executar automaticamente as 14:00 utilize o comando bot-loop
+@Task.new(name="minha_cron_task", cron="0 14 * * *")  #essa task ira executar automaticamente as 14:00 utilize o comando bot-loop
 def main():
 	logger.info("Executando task personalizada!")
 
