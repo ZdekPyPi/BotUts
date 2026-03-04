@@ -30,7 +30,7 @@ def replace_chars(text):
 def before_start_event(function):  # ANTES DE INICIAR
     global BEFORE_START_EVENT
     function.__EVENTTYPE__ = "<BF_ST_EVT>"
-    BEFORE_START_EVENT.append(logger_manager(function))
+    BEFORE_START_EVENT.append(logger_def(function))
 
     def wrapper(*args, **kwargs):
         return function(*args, **kwargs)
@@ -41,7 +41,7 @@ def before_start_event(function):  # ANTES DE INICIAR
 def after_finish_event(function):  # DEPOIS DE TERMINAR
     global AFTER_FINISH_EVENT
     function.__EVENTTYPE__ = "<AF_FI_EVT>"
-    AFTER_FINISH_EVENT.append(logger_manager(function))
+    AFTER_FINISH_EVENT.append(logger_def(function))
 
     def wrapper(*args, **kwargs):
         try:
@@ -53,8 +53,6 @@ def after_finish_event(function):  # DEPOIS DE TERMINAR
 
 
 def logger_start(function):
-    Task.current_task_info(function.__TASKNAME__)
-
     @wraps(function)
     def wrapper(*args, **kwargs):
         global task_time_start, task_time_end
@@ -74,7 +72,7 @@ def logger_start(function):
             # METODOS PARA CALCULO DO TEMPO DE EXECUÇÃO
             task_time_start = time()
 
-            logger_manager(function)(*args, **kwargs)
+            logger_def(function)(*args, **kwargs)
             task_time_end = time()
 
             logger.bind_extra(None)  # RESETA O BIND
@@ -116,7 +114,7 @@ def logger_start(function):
     return wrapper
 
 
-def logger_manager(function):
+def logger_def(function):
     file_name = os.path.basename(function.__code__.co_filename)
     params = lambda : {"line_exec":sys.exc_info()[2].tb_next.tb_lineno if sys.exc_info()[2].tb_next else None,"func_name":function.__name__,"file_name":file_name}
 
@@ -140,5 +138,5 @@ def logger_manager(function):
 def logger_class(cls):
     for attr in cls.__dict__:  # there's propably a better way to do this
         if callable(getattr(cls, attr)):
-            setattr(cls, attr, logger_manager(getattr(cls, attr)))
+            setattr(cls, attr, logger_def(getattr(cls, attr)))
     return cls

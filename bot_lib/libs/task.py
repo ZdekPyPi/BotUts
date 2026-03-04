@@ -57,29 +57,31 @@ class Task:
         schedulled_tasks = Task.schedulled_tasks()
         while(1):
             for name,TaskO in schedulled_tasks.items():
-                if pycron.is_now(TaskO["cron"]) or True:
+                if pycron.is_now(TaskO["cron"]):
                     TaskO["function"]()
                     while pycron.is_now(TaskO["cron"]):pass
             sleep(1)
         pass
 
-    def current_task_info(task=None):
+    def current_task_info(task=None,throw=True):
         task_name = os.environ["TASKNAME"] if not task else task
         if task_name not in Task.schedulled_tasks():
             return None
 
         bot = BotInfo.query().filter_by(botid=botConfig.BOT_ID).all()
         if not bot:
+            if not throw: return None
             raise Exception("BOT nao cadastrado!")
+                
         if bot[0].botname != botConfig.BOT_NAME:
-            raise Exception(
-                f"BOTID '{
-                    botConfig.BOT_ID}' não corresponde a '{
-                    botConfig.BOT_NAME}'")
+            if not throw: return None
+            raise Exception( f"BOTID '{ botConfig.BOT_ID}' não corresponde a '{ botConfig.BOT_NAME}'")
 
         current_task = [x for x in bot if x.task_name == task_name]
         if not current_task:
+            if not throw: return None
             raise Exception(f"TASK '{task_name}' inexistente!")
+
         return current_task[0]
 
     def print_tasks_table(data):

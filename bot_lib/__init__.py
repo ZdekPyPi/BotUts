@@ -1,7 +1,7 @@
 from .settings import botConfig
 from bot_lib.config import logger
 from bot_lib.libs.mark import mark_inter, mark_job, commit_mark_inter
-from bot_lib.libs.loguru import before_start_event, after_finish_event, logger_class, elapsed_time
+from bot_lib.libs.loguru import before_start_event, after_finish_event, logger_class, elapsed_time,logger_def
 from bot_lib.libs.utils import retry, timeout, singleton
 from bot_lib.libs import show_config
 from bot_lib.libs.task import Task
@@ -19,6 +19,7 @@ __all__ = [
     "before_start_event",
     "after_finish_event",
     "logger_class",
+    "logger_def",
     "elapsed_time",
     "retry",
     "timeout",
