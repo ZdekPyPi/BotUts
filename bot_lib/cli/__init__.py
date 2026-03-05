@@ -37,6 +37,7 @@ def botlib_commands():
     print( "setupy", '\t\t', '', '\t\t', 'CRIA A VENV, ATUALIZA O PIP, INSTALA OS REQUIREMENTS')
 
     print_item_terminal("BOT UTILS", color="black", bg_color="cyan")
+    print("bot-new", '\t\t', '', '\t', 'CRIA UMA ESTRUTURA BASICA DE PASTAS E ARQUIVOS PARA UM NOVO ROBO')
     print("bot-tasks", '\t\t', '', '\t', 'LISTA TODAS AS TASKS DO ROBO')
     print( "bot-run", '\t', '<task>', '\t', 'RODA UMA TASK (CASO NAO INFORMADA RODA A PRIMEIRA ENCONTRADA)')
     print("bot-run-all", '\t\t', '', '\t', 'RODA TODAS AS TASKS INDEPENDENTE DO CRON')
