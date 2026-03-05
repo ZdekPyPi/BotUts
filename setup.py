@@ -9,7 +9,7 @@ githubhost = 'github.com' if not GIT_TOKEN else f"{GIT_TOKEN}@github.com"
 
 setup(
     name='botUts',
-    version='1.1.1',
+    version='1.1.2',
     packages=find_packages(),
     long_description=open('README.md',encoding='utf-8').read(),
     long_description_content_type='text/markdown',
@@ -28,14 +28,14 @@ setup(
         "loguru           >= 0.7.2",
         "psutil           >= 5.9.6",
         "requests         >= 2.32.4",
-        "vaultUts         >= 1.1.2",
     ],
     entry_points={
         "console_scripts": [
-            "gitup          = bot_lib.cli:gitup",
-            "upreq          = bot_lib.cli:upreq",  # OK
-            "setupy         = bot_lib.cli:setupy",  # OK
-            "bot-first-setup= bot_lib.cli:bot_first_setup",  # OK
+            "gitup           = bot_lib.cli:gitup",
+            "upreq           = bot_lib.cli:upreq",  # OK
+            "setupy          = bot_lib.cli:setupy",  # OK
+            "bot-new         = bot_lib.cli:new_bot",  # OK
+            "bot-first-setup = bot_lib.cli:bot_first_setup",  # OK
             # PORTAINER
             "bot-deploy      = bot_lib.cli:pull_redeploy",  # OK
             "bot-stack       = bot_lib.cli:create_stack",  # OK
