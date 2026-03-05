@@ -311,4 +311,10 @@ def new_bot():
         with open(f'./{botname}/docker-compose.yml', 'w') as compose_file:
             compose_file.write(compose_text)
 
+        with open(f'./{botname}/requirements.txt', 'w',encoding="utf-8") as req_file:
+            req_file.write("#========================= BOT LIBS ======================\n")
+            req_file.write("botUts           == 1.1.4\n")
+            req_file.write("nativeUts        == 1.0.3\n")
+            req_file.write("#========================= COMPANY LIBS ======================\n\n")
+
     print_with_color_tags(f"<bg_green> NEW BOT '{botname}' CREATED SUCCESSFULLY </bg_green>")
