@@ -5,31 +5,31 @@ import functools
 
 
 def retry(attempts=3, delay=2, skip_on_errors=None):
-    """
-    attempts: Número máximo de execuções.
-    delay: Tempo de espera em segundos entre as tentativas.
-    skip_on_errors: Lista de classes de exceção que NÃO devem disparar o retry.
-    """
-    # Converte para tupla para o isinstance funcionar corretamente
-    skip_errors = () if skip_on_errors is None else tuple(skip_on_errors)
-
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            last_exception = None
-            for tentativa in range(1, attempts + 1):
-                try:
-                    return func(*args, **kwargs)
-                except skip_errors as e:
-                    raise e
-                except Exception as e:
-                    last_exception = e
-                    if tentativa == attempts:
-                        raise last_exception
-                    sleep(delay)
-            return None
-        return wrapper
-    return decorator
+   """
+   attempts: Número máximo de execuções.
+   delay: Tempo de espera em segundos entre as tentativas.
+   skip_on_errors: Lista de classes de exceção que NÃO devem disparar o retry.
+   """
+   # Converte para tupla para o isinstance funcionar corretamente
+   skip_errors = () if skip_on_errors is None else tuple(skip_on_errors)
+    
+   def decorator(function):
+      @wraps(function)
+      def wrapper(*args, **kwargs):
+         last_exception = None
+         for tentativa in range(1, attempts + 1):
+            try:
+               function.__RETRY_ATTEMPT__ = tentativa
+               return function(*args, **kwargs)
+            except skip_errors as e: raise
+            except Exception as e:
+               last_exception = e
+               if tentativa == attempts:
+                  raise
+               sleep(delay)
+         return None
+      return wrapper
+   return decorator
 
 
 def timeout(time: int):

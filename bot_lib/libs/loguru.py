@@ -51,6 +51,19 @@ def after_finish_event(function):  # DEPOIS DE TERMINAR
 
     return wrapper
 
+def get_line():
+    try:
+        l1 = sys.exc_info()[2].tb_next
+
+        #VERIFICA RETRY
+        if "__RETRY_ATTEMPT__" in l1.tb_frame.f_locals["function"].__dict__:
+            return l1.tb_next.tb_lineno
+        
+        return l1.tb_lineno if l1 else ""
+    except:
+        return ""
+
+
 
 def logger_start(function):
     @wraps(function)
@@ -116,7 +129,7 @@ def logger_start(function):
 
 def logger_def(function):
     file_name = os.path.basename(function.__code__.co_filename)
-    params = lambda : {"line_exec":sys.exc_info()[2].tb_next.tb_lineno if sys.exc_info()[2].tb_next else None,"func_name":function.__name__,"file_name":file_name}
+    params = lambda : {"line_exec":get_line(),"func_name":function.__name__,"file_name":file_name}
 
     @wraps(function)
     def wrapper(*args, **kwargs):
