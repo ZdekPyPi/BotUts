@@ -52,16 +52,17 @@ def after_finish_event(function):  # DEPOIS DE TERMINAR
     return wrapper
 
 def get_line():
+
     try:
-        l1 = sys.exc_info()[2].tb_next
+        l1 = sys.exc_info()[2]
 
         #VERIFICA RETRY
         if "__RETRY_ATTEMPT__" in l1.tb_frame.f_locals["function"].__dict__:
-            return l1.tb_next.tb_lineno
+            return l1.tb_next.tb_next.tb_lineno
         
-        return l1.tb_lineno if l1 else ""
+        return l1.tb_next.tb_lineno if l1.tb_next else None
     except:
-        return ""
+        return None
 
 
 
