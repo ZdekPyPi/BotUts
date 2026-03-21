@@ -14,6 +14,52 @@ import base64
 import tempfile
 import io
 import zipfile
+import winreg
+import ctypes
+from ctypes import wintypes
+
+def add_bats_to_path():
+    if venv_ativa(): return
+    #BATS
+    novo_caminho = str(Path.joinpath(Path(__file__).parent.parent.resolve(),'bats'))
+    # Acessa a chave de ambiente do USUÁRIO (mais seguro que a do sistema)
+    
+    with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment", 0, winreg.KEY_ALL_ACCESS) as key:
+        try:
+            # Obtém o PATH atual
+            valor_atual, tipo = winreg.QueryValueEx(key, "PATH")
+        except FileNotFoundError:
+            winreg.SetValueEx(key, "PATH", 0, winreg.REG_SZ, novo_caminho)
+            avisar_sistema_da_mudanca()
+            return
+
+        # Verifica se o caminho já está lá para não duplicar
+        if r"bot_lib\bats" in valor_atual:
+            #remove o caminho antigo para evitar duplicações
+            valor_atual = valor_atual.split(";")
+            valor_atual = ";".join([v for v in valor_atual if r"bot_lib\bats" not in v])
+
+        # Monta o novo valor mantendo o que já existia
+        novo_valor = f"{valor_atual};{novo_caminho};".replace(";;",";")
+        winreg.SetValueEx(key, "PATH", 0, tipo, novo_valor)
+        avisar_sistema_da_mudanca()
+
+def avisar_sistema_da_mudanca():
+    # Envia uma mensagem de broadcast (WM_SETTINGCHANGE)
+    HWND_BROADCAST = 0xFFFF
+    WM_SETTINGCHANGE = 0x001A
+    SMTO_ABORTIFHUNG = 0x0002
+    
+    result = ctypes.windll.user32.SendMessageTimeoutW(
+        HWND_BROADCAST, 
+        WM_SETTINGCHANGE, 
+        0, 
+        "Environment", 
+        SMTO_ABORTIFHUNG, 
+        5000, 
+        ctypes.byref(wintypes.DWORD())
+    )
+
 
 def print_item_terminal(text, title=False, total_size=80,
                         color="black", bg_color="white"):
@@ -35,11 +81,12 @@ def botlib_commands():
     print("gitup", '\t\t', '<comment>', '\t', 'ATUALIZA O REPOSITORIO DO GIT')
     print("upreq", '\t\t', '', '\t\t', 'ATUALIZA O REQUIREMENTS DA VENV ATUAL')
     print( "setupy", '\t\t', '', '\t\t', 'CRIA A VENV, ATUALIZA O PIP, INSTALA OS REQUIREMENTS')
+    print( "addbats", '\t\t', '', '\t\t', 'ADICIONA O CAMINHO DOS BATS AO PATH')
 
     print_item_terminal("BOT UTILS", color="black", bg_color="cyan")
     print("bot-new", '\t\t', '', '\t', 'CRIA UMA ESTRUTURA BASICA DE PASTAS E ARQUIVOS PARA UM NOVO ROBO')
     print("bot-tasks", '\t\t', '', '\t', 'LISTA TODAS AS TASKS DO ROBO')
-    print( "bot-run", '\t', '<task>', '\t', 'RODA UMA TASK (CASO NAO INFORMADA RODA A PRIMEIRA ENCONTRADA)')
+    print("bot-run", '\t', '<task>', '\t', 'RODA UMA TASK (CASO NAO INFORMADA RODA A PRIMEIRA ENCONTRADA)')
     print("bot-run-all", '\t\t', '', '\t', 'RODA TODAS AS TASKS INDEPENDENTE DO CRON')
     print("bot-loop", '\t\t', '', '\t', 'INICIA O LOOP DO PROCESSO')
 

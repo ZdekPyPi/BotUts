@@ -9,10 +9,12 @@ githubhost = 'github.com' if not GIT_TOKEN else f"{GIT_TOKEN}@github.com"
 
 setup(
     name='botUts',
-    version='1.1.6',
+    version='1.1.7',
     packages=find_packages(),
     long_description=open('README.md',encoding='utf-8').read(),
     long_description_content_type='text/markdown',
+    package_data = {'bot_lib': ['bats/*.bat']},
+    include_package_data = True,
     install_requires=[
         "colorama         == 0.4.6",
         "httplib2         >= 0.15.0",
@@ -35,7 +37,7 @@ setup(
             "upreq           = bot_lib.cli:upreq",  # OK
             "setupy          = bot_lib.cli:setupy",  # OK
             "bot-new         = bot_lib.cli:new_bot",  # OK
-            "bot-first-setup = bot_lib.cli:bot_first_setup",  # OK
+            "addbats         = bot_lib.cli:add_bats_to_path",  # OK
             # PORTAINER
             "bot-deploy      = bot_lib.cli:pull_redeploy",  # OK
             "bot-stack       = bot_lib.cli:create_stack",  # OK

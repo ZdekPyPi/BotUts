@@ -1,5 +1,5 @@
 from bot_lib import *
-from bot_lib.cli import refresh_template_path
+from bot_lib.cli import *
 
 @Task.new(name="test", local=True)
 def main():
@@ -10,4 +10,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main() 
+    main()
