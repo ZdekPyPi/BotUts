@@ -101,8 +101,7 @@ def logger_start(function):
         except BusinessException as e:
             if AFTER_FINISH_EVENT:
                 [fn("BUSNSEXP", str(e)) for fn in AFTER_FINISH_EVENT]
-            logger.log(
-                "BUSNSEXP",
+            logger.busnsexp(
                 "FINISHED",
                 func_name=function.__name__,
                 depth=3)
@@ -137,7 +136,7 @@ def logger_def(function):
         try:
            return function(*args, **kwargs)
         except BusinessException as e:
-            logger.log("BUSNSEXP", str(e))
+            logger.busnsexp(replace_chars(str(e)),**params())
             raise
         except Exception as e:
             if "__EVENTTYPE__" in function.__dict__: # SE A FUNCAO FOR DO TIPO EVENTO
